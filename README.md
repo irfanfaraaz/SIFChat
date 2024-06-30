@@ -17,13 +17,14 @@
 1. Copy `sample.env.local` and create `env.local`. Fill up the postgres database credentials.
 
 2. ```
-   MONGODB_URI=
+   UPSTASH_REDIS_REST_URL=
+   UPSTASH_REDIS_REST_TOKEN=
 
    GOOGLE_CLIENT_ID=
    GOOGLE_CLIENT_SECRET=
    ```
 
-3. You need to connect to a mongodb instance
+3. You need to connect to a redis instance
 
 4. Copy `sample.env.local` and create `env.local`. Fill up the database credentials.
 

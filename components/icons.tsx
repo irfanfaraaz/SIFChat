@@ -4,10 +4,10 @@ import {
   Moon,
   SunMedium,
   Twitter,
+  UserPlus,
   type Icon as LucideIcon,
 } from 'lucide-react';
 
-export type Icon = LucideIcon;
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
@@ -38,4 +38,7 @@ export const Icons = {
       />
     </svg>
   ),
+  userPlus: UserPlus,
 };
+
+export type Icon = keyof typeof Icons;

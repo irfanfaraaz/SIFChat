@@ -1,5 +1,6 @@
 export type TPathRouteMap = {
   HOME: string;
+  ADD: string;
   LOGIN: string;
   DASHBOARD: string;
   DASHBOARD_REVIEW: string;
@@ -8,6 +9,7 @@ export type TPathRouteMap = {
 
 export const PATHS: TPathRouteMap = {
   HOME: '/',
+  ADD: '/add',
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
   DASHBOARD_REVIEW: '/dashboard/review',
