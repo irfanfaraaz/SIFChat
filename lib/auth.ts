@@ -6,7 +6,7 @@ import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import { db } from './db/db';
 import { sendVerificationRequest } from './email/sendLoginMail';
-import { newUserCreated } from './notification';
+// import { newUserCreated } from './notification';
 import { fetchRedis } from '@/helpers/redis';
 
 export const authOptions: NextAuthOptions = {
@@ -49,24 +49,43 @@ export const authOptions: NextAuthOptions = {
     // }),
   ],
   callbacks: {
-    session: async ({ session, token }) => {
-      if (session?.user) {
-        // @ts-ignore
-        session.user.id = token.sub;
+    async jwt({ token, user }) {
+      const dbUserResult = (await fetchRedis('get', `user:${token.id}`)) as
+        | string
+        | null;
+
+      if (!dbUserResult) {
+        if (user) {
+          token.id = user!.id;
+        }
+
+        return token;
       }
-      return session;
+
+      const dbUser = JSON.parse(dbUserResult) as User;
+
+      return {
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        picture: dbUser.image,
+      };
     },
-    jwt: async ({ user, token }) => {
-      if (user) {
-        token.uid = user.id;
+    async session({ session, token }) {
+      if (token && session.user) {
+        (session.user as User).id = token.id as string;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
       }
-      return token;
+
+      return session;
     },
   },
 
-  events: {
-    createUser: async ({ user }) => {
-      await newUserCreated(user);
-    },
-  },
+  // events: {
+  //   createUser: async ({ user }) => {
+  //     await newUserCreated(user);
+  //   },
+  // },
 };
