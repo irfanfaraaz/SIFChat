@@ -13,7 +13,7 @@ interface AddFriendButtonProps {}
 
 type FormData = z.infer<typeof addFriendValidator>;
 
-const AddFriendButton = ({}) => {
+const AddFriendButton = () => {
   const [showSuccessState, setShowSuccessState] = useState(false);
 
   const {
