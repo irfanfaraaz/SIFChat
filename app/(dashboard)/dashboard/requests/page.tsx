@@ -19,7 +19,8 @@ const page = async () => {
 
   const incomingFriendRequests = await Promise.all(
     incomingSenderIds.map(async (senderId) => {
-      const sender = (await fetchRedis('get', `user:${senderId}`)) as User;
+      const senderData = await fetchRedis('get', `user:${senderId}`);
+      const sender = JSON.parse(senderData) as User;
       return { senderId, senderEmail: sender.email };
     }),
   );
@@ -27,7 +28,10 @@ const page = async () => {
     <main className="pt-8">
       <h1 className="mb-8 text-5xl font-bold">Friend requests...</h1>
       <div className="flex flex-col gap-4">
-        <FriendRequests />
+        <FriendRequests
+          sessionId={user.id}
+          incomingFriendRequests={incomingFriendRequests}
+        />
       </div>
     </main>
   );
